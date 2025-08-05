@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Karten_APP</title>
+  <link rel="stylesheet" href="static/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+</head>
+<body>
+  <div class="container">
+    <h1>Routenplaner</h1>
+    <div class="form">
+      <input id="start" placeholder="Startort" list="start-list">
+      <datalist id="start-list"></datalist>
+      <input id="end"   placeholder="Zielort"  list="end-list">
+      <datalist id="end-list"></datalist>
+      <button id="go">Route berechnen</button>
+    </div>
+    <div id="map"></div>
+    <div id="history">
+      <h2>Top 10 Suchanfragen</h2>
+      <ul id="top10"></ul>
+    </div>
+  </div>
+
+  <script>const orsKey = "{{ ors_key }}";</script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="static/app.js" defer></script>
+</body>
+</html>

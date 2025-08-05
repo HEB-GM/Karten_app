@@ -1,0 +1,24 @@
+{
+  "name": "karten-app-frontend",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "jest --detectOpenHandles --forceExit"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "testEnvironment": "jsdom",
+    "setupFiles": ["<rootDir>/jest.setup.js"],
+    "verbose": true
+  },
+  "devDependencies": {
+    "@babel/core": "^7.x",
+    "@babel/preset-env": "^7.x",
+    "babel-jest": "^29.x",
+    "jest": "^29.x",
+    "jest-environment-jsdom": "^29.x",
+    "jsdom": "^22.x"
+  }
+}
