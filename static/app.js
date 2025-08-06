@@ -31,12 +31,14 @@ async function calculateRoute(startAddr, endAddr, apiKey) {
   return json.features[0].geometry;
 }
 
-module.exports = { geocode, calculateRoute };
+if (typeof module !== 'undefined') {
+  module.exports = { geocode, calculateRoute };
+}
 
 // ==== Browser-Init (Leaflet + DOM events) ====
 if (typeof document !== 'undefined') {
   document.addEventListener('DOMContentLoaded', () => {
-    const apiKey  = process.env.ORS_API_KEY || '';
+    const apiKey  = (typeof window !== 'undefined' && window.orsKey) || (typeof process !== 'undefined' && process.env.ORS_API_KEY) || '';
     const map     = L.map('map').setView([47.3769, 8.5417], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
