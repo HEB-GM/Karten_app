@@ -1,12 +1,16 @@
-import pytest, transaction
+import os
+import pytest
+
+os.environ["TEST_DB"] = "1"
+
 from app import app
-from storage import get_db, close_db
+from storage import get_db, close_db, commit_db
 
 @pytest.fixture(autouse=True)
 def clear_db():
     conn, root = get_db()
     root['routes'].clear()
-    transaction.commit()
+    commit_db(conn)
     close_db(conn)
     yield
 

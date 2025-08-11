@@ -1,14 +1,7 @@
-import os, transaction
+import os
 from flask import Flask, render_template, request, jsonify
 from persistent import Persistent
-from persistent.mapping import PersistentMapping
-from ZODB.FileStorage import FileStorage
-from ZODB.DB import DB
-
-# ZODB initialisieren
-DB_FILE = os.path.join(os.path.dirname(__file__), 'data.fs')
-storage = FileStorage(DB_FILE)
-db = DB(storage)
+from storage import get_db, close_db, commit_db
 
 class Route(Persistent):
     def __init__(self, name, start, end, path):
@@ -16,17 +9,6 @@ class Route(Persistent):
         self.start = start
         self.end = end
         self.path = path
-
-def get_db():
-    conn = db.open()
-    root = conn.root()
-    if 'routes' not in root:
-        root['routes'] = PersistentMapping()
-        transaction.commit()
-    return conn, root
-
-def close_db(conn):
-    conn.close()
 
 app = Flask(__name__, static_folder='static', template_folder='.')
 
@@ -46,7 +28,7 @@ def routes():
                 return jsonify(error=f"Missing {f}"), 400
         rid = str(len(root['routes'])+1)
         root['routes'][rid] = Route(**data)
-        transaction.commit()
+        commit_db(conn)
         close_db(conn)
         return jsonify(id=rid), 201
 
