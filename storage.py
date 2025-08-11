@@ -1,6 +1,7 @@
-import os, transaction
+import os
 from persistent.mapping import PersistentMapping
 from ZODB.DB import DB
+from zc.lockfile import LockError
 
 # Im TEST_DB-Fall: In-Memory-DemoStorage, sonst FileStorage
 if os.environ.get("TEST_DB") == "1":
@@ -9,7 +10,15 @@ if os.environ.get("TEST_DB") == "1":
 else:
     from ZODB.FileStorage import FileStorage as Storage
     DB_FILE = os.path.join(os.path.dirname(__file__), 'data.fs')
-    storage = Storage(DB_FILE)
+    try:
+        storage = Storage(DB_FILE)
+    except LockError:
+        lock_path = DB_FILE + '.lock'
+        if os.path.exists(lock_path):
+            os.remove(lock_path)
+            storage = Storage(DB_FILE)
+        else:
+            raise
 
 db = DB(storage)
 
@@ -18,8 +27,11 @@ def get_db():
     root = conn.root()
     if 'routes' not in root:
         root['routes'] = PersistentMapping()
-        transaction.commit()
+        commit_db(conn)
     return conn, root
 
 def close_db(conn):
     conn.close()
+
+def commit_db(conn):
+    conn.transaction_manager.commit()
