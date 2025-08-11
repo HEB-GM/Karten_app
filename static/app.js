@@ -79,7 +79,9 @@ async function calculateRoute(startAddr, endAddr, apiKey) {
 }
 
 if (typeof module !== 'undefined') {
+
   module.exports = { geocode, calculateRoute, AppError };
+
 }
 
 // ==== Browser-Init (Leaflet + DOM events) ====
