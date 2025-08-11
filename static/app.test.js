@@ -11,4 +11,3 @@ test('geocode returns error code on HTTP failure', async () => {
   global.fetch = jest.fn(async () => ({ ok: false, status: 403, json: async () => ({}) }));
   await expect(app.geocode('a', 'k')).rejects.toMatchObject({ code: 'GEOCODE_HTTP_403' });
 });
-
