@@ -1,24 +1,14 @@
 {
-  "name": "karten-app-frontend",
+  "name": "litemaps_zodb",
   "version": "1.0.0",
-  "type": "module",
+  "private": true,
   "scripts": {
-    "test": "jest --detectOpenHandles --forceExit"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.js$": "babel-jest"
-    },
-    "testEnvironment": "jsdom",
-    "setupFiles": ["<rootDir>/jest.setup.js"],
-    "verbose": true
+    "serve": "npx http-server -p 5500 .",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:report": "playwright show-report"
   },
   "devDependencies": {
-    "@babel/core": "^7.x",
-    "@babel/preset-env": "^7.x",
-    "babel-jest": "^29.x",
-    "jest": "^29.x",
-    "jest-environment-jsdom": "^29.x",
-    "jsdom": "^22.x"
+    "@playwright/test": "^1.47.0"
   }
 }
